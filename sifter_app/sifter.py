@@ -210,18 +210,17 @@ def check_for_source(src_name):
         return None
 
 
-def start():
-    scheduler.add_job(
-        id='sift_scheduler',
-        func=sift,
-        trigger='interval',
-        minutes=6,
-        max_instances=1,
-        replace_existing=True
-    )
+scheduler.add_job(
+    id='sift_scheduler',
+    func=sift,
+    trigger='interval',
+    minutes=6,
+    max_instances=1,
+    replace_existing=True
+)
 
-    if send_all_src():
-        scheduler.start()
-        logger.log(level=logging.INFO, msg='starting scheduler')
-    else:
-        logger.log(level=logging.CRITICAL, msg='Failed send all, scheduler not started.')
+if send_all_src():
+    scheduler.start()
+    logger.log(level=logging.INFO, msg='starting scheduler')
+else:
+    logger.log(level=logging.CRITICAL, msg='Failed send all, scheduler not started.')
